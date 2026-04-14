@@ -1,4 +1,5 @@
 const swaggerJsdoc = require('swagger-jsdoc');
+const path = require('path');
 
 const options = {
   definition: {
@@ -10,8 +11,8 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000/api/v1',
-        description: 'Development server',
+        url: process.env.BACKEND_URL || 'http://localhost:3000',
+        description: 'Current Environment',
       },
     ],
     components: {

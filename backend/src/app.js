@@ -29,8 +29,12 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Swagger Docs
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// Documentation
+const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { 
+  customCssUrl: CSS_URL,
+  customSiteTitle: "BuildCheck API Docs"
+}));
 
 // API Routes
 const API_PREFIX = '/api/v1';
