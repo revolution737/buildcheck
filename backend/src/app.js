@@ -29,12 +29,53 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Documentation
-const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { 
-  customCssUrl: CSS_URL,
-  customSiteTitle: "BuildCheck API Docs"
-}));
+// Documentation - Manual Swagger UI Injection for Vercel
+app.get('/api/docs', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>BuildCheck API Docs</title>
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.12.0/swagger-ui.min.css" >
+      <style>
+        html { box-sizing: border-box; overflow: -moz-scrollbars-vertical; overflow-y: scroll; }
+        *, *:before, *:after { box-sizing: inherit; }
+        body { margin:0; background: #fafafa; }
+      </style>
+    </head>
+    <body>
+      <div id="swagger-ui"></div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.12.0/swagger-ui-bundle.js"> </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.12.0/swagger-ui-standalone-preset.js"> </script>
+      <script>
+        window.onload = function() {
+          const ui = SwaggerUIBundle({
+            url: "/api/docs.json",
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            presets: [
+              SwaggerUIBundle.presets.apis,
+              SwaggerUIStandalonePreset
+            ],
+            plugins: [
+              SwaggerUIBundle.plugins.DownloadUrl
+            ],
+            layout: "StandaloneLayout"
+          })
+          window.ui = ui
+        }
+      </script>
+    </body>
+    </html>
+  `);
+});
+
+// Route to see the raw Swagger JSON (for debugging)
+app.get('/api/docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
 
 // API Routes
 const API_PREFIX = '/api/v1';
