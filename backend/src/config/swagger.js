@@ -11,8 +11,12 @@ const options = {
     },
     servers: [
       {
-        url: process.env.BACKEND_URL || 'http://localhost:3000',
-        description: 'Current Environment',
+        url: 'https://buildcheck-rose.vercel.app',
+        description: 'Production Server',
+      },
+      {
+        url: 'http://localhost:3000',
+        description: 'Local development',
       },
     ],
     components: {
@@ -30,7 +34,10 @@ const options = {
       },
     ],
   },
-  apis: ['./src/modules/**/*.js', './src/app.js'], // paths to files containing OpenAPI definitions
+  apis: [
+    path.join(process.cwd(), 'src/modules/**/*.js'),
+    path.join(process.cwd(), 'src/app.js')
+  ],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
