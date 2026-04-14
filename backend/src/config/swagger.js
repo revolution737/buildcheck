@@ -34,8 +34,13 @@ const options = {
       },
     ],
   },
+  // Explicitly listing files is much more reliable on Vercel than using glob patterns
   apis: [
-    path.join(process.cwd(), 'src/modules/**/*.js'),
+    path.join(process.cwd(), 'src/modules/auth/routes.js'),
+    path.join(process.cwd(), 'src/modules/components/routes.js'),
+    path.join(process.cwd(), 'src/modules/builds/routes.js'),
+    path.join(process.cwd(), 'src/modules/compatibility/routes.js'),
+    path.join(process.cwd(), 'src/modules/admin/routes.js'),
     path.join(process.cwd(), 'src/app.js')
   ],
 };
