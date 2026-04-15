@@ -3,6 +3,7 @@ const logger = require('../utils/logger');
 
 let isConnected = false;
 
+
 const connectDB = async () => {
   if (isConnected) {
     return;
@@ -10,7 +11,7 @@ const connectDB = async () => {
 
   try {
     if (!process.env.MONGODB_URI) {
-        throw new Error('MONGODB_URI environment variable is missing!');
+      throw new Error('MONGODB_URI environment variable is missing!');
     }
 
     const conn = await mongoose.connect(process.env.MONGODB_URI);
@@ -20,7 +21,7 @@ const connectDB = async () => {
     logger.error(`Database Connection Error: ${error.message}`);
     // Only exit in local development, not on Vercel
     if (!process.env.VERCEL) {
-        process.exit(1);
+      process.exit(1);
     }
   }
 };
